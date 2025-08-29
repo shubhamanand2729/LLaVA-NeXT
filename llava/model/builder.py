@@ -24,7 +24,7 @@ from llava.constants import DEFAULT_IMAGE_PATCH_TOKEN, DEFAULT_IM_START_TOKEN, D
 from llava.utils import rank0_print
 
 
-def load_pretrained_model(model_path, model_base, model_name, load_8bit=False, load_4bit=False, device_map="auto", torch_dtype="float16",attn_implementation="flash_attention_2", customized_config=None, overwrite_config=None, **kwargs):
+def load_pretrained_model(model_path, model_base, model_name, load_8bit=False, load_4bit=False, device_map="auto", torch_dtype="float16",attn_implementation=None, customized_config=None, overwrite_config=None, **kwargs):
     kwargs["device_map"] = device_map
 
     if load_8bit:
@@ -78,7 +78,7 @@ def load_pretrained_model(model_path, model_base, model_name, load_8bit=False, l
                 tokenizer = AutoTokenizer.from_pretrained(model_base, use_fast=False)
                 model = LlavaGemmaForCausalLM.from_pretrained(model_base, low_cpu_mem_usage=True, config=lora_cfg_pretrained, attn_implementation=attn_implementation, **kwargs)
             else:
-                from llava.model.language_model.llava_llama import LlavaConfig
+                from llava.model.language_model.llava_llama import LlavaConfig, LlavaLlamaForCausalLM
 
                 lora_cfg_pretrained = LlavaConfig.from_pretrained(model_path)
                 tokenizer = AutoTokenizer.from_pretrained(model_base, use_fast=False)
