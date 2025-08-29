@@ -21,6 +21,11 @@ from tools.filter_keywords import filter_keywords
 from tools.scene_graph import generate_scene_graph_description
 import ffmpeg, torchaudio
 
+# For giving multiple queries to the Video-RAG, move over to the retrieve_pmt_0 variable in this same file, and modify it accordingly.
+
+video_path = "/workspace/LLaVA-NeXT/Chest X-Ray Report Generation and VQA.mp4"  # your video path
+question = "Can you summarize what is happening in the video?"  # your question
+
 max_frames_num = 32
 clip_model = CLIPModel.from_pretrained("openai/clip-vit-large-patch14-336", torch_dtype=torch.float16, device_map="auto")
 clip_processor = CLIPProcessor.from_pretrained("openai/clip-vit-large-patch14-336")
@@ -253,10 +258,6 @@ print(f"---------------OCR{rag_threshold}: {USE_OCR}-----------------")
 print(f"---------------ASR{rag_threshold}: {USE_ASR}-----------------")
 print(f"---------------DET{beta}-{clip_threshold}: {USE_DET}-----------------")
 print(f"---------------Frames: {max_frames_num}-----------------")
-
-
-video_path = "/workspace/LLaVA-NeXT/Chest X-Ray Report Generation and VQA.mp4"  # your video path
-question = "Can you summarize what is happening in the video?"  # your question
 
 
 frames, frame_time, video_time = process_video(video_path, max_frames_num, 1, force_sample=True)
